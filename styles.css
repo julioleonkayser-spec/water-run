@@ -16,7 +16,7 @@ header {
 
 header h1 {
   margin: 0;
-  font-size: 36px;
+  font-size: 38px;
 }
 
 header p {
@@ -33,17 +33,36 @@ main {
   padding: 15px;
 }
 
+/* how to play */
+.how {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 30px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.how div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 /* score and time */
 .info {
   display: flex;
   justify-content: center;
   gap: 40px;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
 }
 
 .info p {
-  margin: 5px 0;
+  margin: 10px 0 5px 0;
 }
 
 #score.good {
@@ -54,21 +73,98 @@ main {
   color: red;
 }
 
+/* the water bar */
+#bar, #game-area {
+  box-sizing: border-box;
+}
+
+#bar {
+  height: 18px;
+  background-color: #dddddd;
+  border: 2px solid #222222;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#bar-fill {
+  width: 0%;
+  height: 100%;
+  background-color: #2E9DF7;
+  transition: width 0.2s;
+}
+
 #message {
   min-height: 24px;
   font-size: 18px;
+  margin: 10px 0;
 }
 
 /* the game area */
 #game-area {
   position: relative;
   width: 100%;
-  height: 250px;
-  background-color: #d6efff;
+  height: 280px;
+  background-color: #bfe6ff;
   border: 3px solid #222222;
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
+}
+
+/* sun, clouds and hills */
+.sun {
+  position: absolute;
+  top: 15px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background-color: #FFC907;
+  border-radius: 50%;
+}
+
+.cloud {
+  position: absolute;
+  width: 70px;
+  height: 24px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  animation: drift 25s linear infinite;
+}
+
+.cloud1 {
+  top: 30px;
+  left: 100%;
+}
+
+.cloud2 {
+  top: 70px;
+  left: 100%;
+  animation-delay: -12s;
+}
+
+@keyframes drift {
+  from { left: 100%; }
+  to { left: -100px; }
+}
+
+.hill {
+  position: absolute;
+  bottom: 40px;
+  height: 90px;
+  background-color: #9bd37f;
+  border-radius: 50% 50% 0 0;
+}
+
+.hill1 {
+  left: -5%;
+  width: 45%;
+}
+
+.hill2 {
+  left: 35%;
+  width: 70%;
+  height: 60px;
+  background-color: #b5e29b;
 }
 
 #ground {
@@ -80,16 +176,90 @@ main {
   border-top: 3px solid #222222;
 }
 
-/* the player */
+/* the player (drawn with divs) */
 #player {
   position: absolute;
   left: 40px;
   bottom: 40px;
-  width: 30px;
-  height: 50px;
+  width: 36px;
+  height: 64px;
+}
+
+#player div {
+  position: absolute;
+  border: 2px solid #222222;
+}
+
+.head {
+  top: 0;
+  left: 8px;
+  width: 18px;
+  height: 18px;
+  background-color: #a8693a;
+  border-radius: 50%;
+}
+
+.hair {
+  top: 0;
+  left: 8px;
+  width: 18px;
+  height: 8px;
+  background-color: #222222;
+  border-radius: 10px 10px 0 0;
+}
+
+.body {
+  top: 22px;
+  left: 6px;
+  width: 22px;
+  height: 22px;
   background-color: #2E9DF7;
-  border: 3px solid #222222;
-  border-radius: 10px 10px 4px 4px;
+  border-radius: 6px;
+}
+
+.leg {
+  top: 46px;
+  width: 7px;
+  height: 14px;
+  background-color: #222222;
+  transform-origin: top;
+}
+
+.leg1 {
+  left: 9px;
+}
+
+.leg2 {
+  left: 19px;
+}
+
+/* the yellow jug she carries */
+.can {
+  top: 28px;
+  left: 24px;
+  width: 12px;
+  height: 16px;
+  background-color: #FFC907;
+  border-radius: 3px;
+}
+
+/* her legs move while the game is running */
+.walking .leg1 {
+  animation: step 0.3s infinite alternate;
+}
+
+.walking .leg2 {
+  animation: step 0.3s infinite alternate-reverse;
+}
+
+@keyframes step {
+  from { transform: rotate(-25deg); }
+  to { transform: rotate(25deg); }
+}
+
+/* the shirt turns red when she hits a rock */
+#player.hit .body {
+  background-color: #e03a3a;
 }
 
 #player.jump {
@@ -103,12 +273,9 @@ main {
 }
 
 /* jugs and rocks */
-.item {
-  position: absolute;
-  bottom: 40px;
-}
-
 .jug {
+  position: relative;
+  display: inline-block;
   width: 28px;
   height: 36px;
   background-color: #FFC907;
@@ -116,12 +283,78 @@ main {
   border-radius: 6px;
 }
 
+/* the handle on top of the jug */
+.jug::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 4px;
+  width: 12px;
+  height: 7px;
+  border: 3px solid #222222;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+}
+
 .rock {
+  display: inline-block;
   width: 36px;
   height: 30px;
   background-color: #777777;
   border: 3px solid #444444;
   border-radius: 50% 50% 6px 6px;
+}
+
+/* this goes after .jug so the items on the road are positioned by the game */
+.item {
+  position: absolute;
+  bottom: 40px;
+}
+
+/* +1 and -1 that float up */
+.popup {
+  position: absolute;
+  left: 30px;
+  bottom: 120px;
+  font-size: 28px;
+  font-weight: bold;
+  animation: float 0.8s ease-out forwards;
+}
+
+@keyframes float {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-40px); opacity: 0; }
+}
+
+/* start and end screen */
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(34, 34, 34, 0.7);
+  color: #ffffff;
+  z-index: 5;
+}
+
+#overlay h2 {
+  margin: 0 0 10px 0;
+  font-size: 32px;
+}
+
+#overlay p {
+  margin: 0;
+  padding: 0 15px;
+  font-size: 18px;
+}
+
+#overlay.hidden {
+  display: none;
 }
 
 /* buttons */
@@ -177,16 +410,25 @@ footer a {
 /* smaller screens */
 @media (max-width: 600px) {
   header h1 {
-    font-size: 28px;
+    font-size: 30px;
+  }
+
+  .how {
+    font-size: 14px;
+    gap: 8px 15px;
   }
 
   .info {
     gap: 20px;
-    font-size: 18px;
+    font-size: 20px;
   }
 
   #game-area {
-    height: 220px;
+    height: 260px;
+  }
+
+  #overlay h2 {
+    font-size: 26px;
   }
 
   button {

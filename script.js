@@ -4,9 +4,13 @@
 // get things from the page
 var scoreDisplay = document.getElementById("score");
 var timeDisplay = document.getElementById("time");
+var barFill = document.getElementById("bar-fill");
 var message = document.getElementById("message");
 var gameArea = document.getElementById("game-area");
 var player = document.getElementById("player");
+var overlay = document.getElementById("overlay");
+var overlayTitle = document.getElementById("overlay-title");
+var overlayText = document.getElementById("overlay-text");
 var startBtn = document.getElementById("start-btn");
 var resetBtn = document.getElementById("reset-btn");
 
@@ -42,6 +46,8 @@ function startGame() {
   resetGame();
   gameRunning = true;
   startBtn.disabled = true;
+  overlay.classList.add("hidden");
+  gameArea.classList.add("walking");
   message.textContent = "Go! Grab the jugs and jump the rocks!";
 
   timerInterval = setInterval(countDown, 1000);
@@ -58,25 +64,47 @@ function resetGame() {
   gameRunning = false;
   isJumping = false;
   player.classList.remove("jump");
+  player.classList.remove("hit");
+  gameArea.classList.remove("walking");
 
   score = 0;
   timeLeft = 30;
-  scoreDisplay.textContent = score;
+  updateScore();
   timeDisplay.textContent = timeLeft;
-  message.textContent = "Press Start. Then click, tap, or press SPACE to jump.";
+  message.textContent = "Ready? Press Start!";
   startBtn.disabled = false;
 
-  // remove the jugs and rocks that are still on the screen
+  // show the start screen again
+  overlayTitle.textContent = "Water Run";
+  overlayText.textContent = "Press Start to begin.";
+  overlay.classList.remove("hidden");
+
+  // remove the jugs, rocks and +1 / -1 that are still on the screen
   for (var i = 0; i < items.length; i++) {
     items[i].remove();
   }
   items = [];
+
+  var popups = document.querySelectorAll(".popup");
+  for (var p = 0; p < popups.length; p++) {
+    popups[p].remove();
+  }
 
   // remove any confetti
   var pieces = document.querySelectorAll(".confetti");
   for (var j = 0; j < pieces.length; j++) {
     pieces[j].remove();
   }
+}
+
+// show the score and fill the water bar
+function updateScore() {
+  scoreDisplay.textContent = score;
+  var percent = (score / goal) * 100;
+  if (percent > 100) {
+    percent = 100;
+  }
+  barFill.style.width = percent + "%";
 }
 
 // the timer
@@ -131,17 +159,20 @@ function moveItems() {
     if (touching) {
       if (item.classList.contains("jug")) {
         score = score + 1;
-        message.textContent = "+1 jug! Nice!";
+        message.textContent = "Nice! You got a jug.";
         flashScore("good");
+        showPopup("+1", "green");
       } else {
         // the rock takes a point away, but not below 0
         if (score > 0) {
           score = score - 1;
         }
-        message.textContent = "Ouch, a rock! -1";
+        message.textContent = "Ouch, a rock! Jump next time.";
         flashScore("bad");
+        showPopup("-1", "red");
+        hitRock();
       }
-      scoreDisplay.textContent = score;
+      updateScore();
       item.remove();
       items.splice(i, 1);
     }
@@ -153,6 +184,27 @@ function flashScore(color) {
   scoreDisplay.className = color;
   setTimeout(function () {
     scoreDisplay.className = "";
+  }, 300);
+}
+
+// show +1 or -1 above the player
+function showPopup(text, color) {
+  var popup = document.createElement("div");
+  popup.className = "popup";
+  popup.textContent = text;
+  popup.style.color = color;
+  gameArea.appendChild(popup);
+
+  setTimeout(function () {
+    popup.remove();
+  }, 800);
+}
+
+// the player's shirt turns red for a moment
+function hitRock() {
+  player.classList.add("hit");
+  setTimeout(function () {
+    player.classList.remove("hit");
   }, 300);
 }
 
@@ -177,15 +229,21 @@ function endGame() {
   clearInterval(moveInterval);
   gameRunning = false;
   startBtn.disabled = false;
+  gameArea.classList.remove("walking");
 
   if (score >= goal) {
     var winIndex = Math.floor(Math.random() * winMessages.length);
-    message.textContent = "Score: " + score + ". " + winMessages[winIndex];
+    overlayTitle.textContent = "You win! Score: " + score;
+    overlayText.textContent = winMessages[winIndex];
+    message.textContent = "You collected " + score + " jugs!";
     makeConfetti();
   } else {
     var loseIndex = Math.floor(Math.random() * loseMessages.length);
-    message.textContent = "Score: " + score + ". " + loseMessages[loseIndex];
+    overlayTitle.textContent = "Time's up! Score: " + score;
+    overlayText.textContent = loseMessages[loseIndex];
+    message.textContent = "You needed " + goal + " jugs. Try again!";
   }
+  overlay.classList.remove("hidden");
 }
 
 // confetti when you win

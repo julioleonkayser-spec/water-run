@@ -10,24 +10,54 @@
 
   <header>
     <h1>Water Run</h1>
-    <p>Carry water home! Grab the yellow jerry cans and jump over the rocks.</p>
+    <p>Many people walk far every day to get water. Help her bring it home!</p>
     <p class="goal">Goal: collect 12 jugs in 30 seconds.</p>
   </header>
 
   <main>
+    <!-- how to play -->
+    <div class="how">
+      <div><span class="jug"></span> Jug = +1 point</div>
+      <div><span class="rock"></span> Rock = -1 point</div>
+      <div>Jump: click, tap, or press SPACE</div>
+    </div>
+
     <!-- score and timer -->
     <div class="info">
-      <p>Score: <span id="score">0</span></p>
+      <p>Score: <span id="score">0</span> / 12</p>
       <p>Time: <span id="time">30</span></p>
     </div>
 
+    <!-- water bar -->
+    <div id="bar"><div id="bar-fill"></div></div>
+
     <!-- feedback message -->
-    <p id="message">Press Start. Then click, tap, or press SPACE to jump.</p>
+    <p id="message">Ready? Press Start!</p>
 
     <!-- the game -->
     <div id="game-area">
-      <div id="player"></div>
+      <div class="sun"></div>
+      <div class="cloud cloud1"></div>
+      <div class="cloud cloud2"></div>
+      <div class="hill hill1"></div>
+      <div class="hill hill2"></div>
       <div id="ground"></div>
+
+      <!-- the player -->
+      <div id="player">
+        <div class="head"></div>
+        <div class="hair"></div>
+        <div class="body"></div>
+        <div class="leg leg1"></div>
+        <div class="leg leg2"></div>
+        <div class="can"></div>
+      </div>
+
+      <!-- start and end screen -->
+      <div id="overlay">
+        <h2 id="overlay-title">Water Run</h2>
+        <p id="overlay-text">Press Start to begin.</p>
+      </div>
     </div>
 
     <div class="buttons">

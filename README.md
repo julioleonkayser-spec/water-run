@@ -14,7 +14,11 @@ A small browser game I made for the charity: water project. You carry water home
 
 ## What it has
 
+- A person who walks and jumps, drawn with CSS
 - Score that changes right away (green when you get a jug, red when you hit a rock)
+- A water bar that fills up as you collect jugs
+- A floating +1 or -1 when you hit something
+- A start screen and an end screen
 - 30 second timer
 - A message that tells you what just happened
 - Random win and lose messages at the end
