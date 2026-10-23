@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Water Run</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header>
+    <h1>Water Run</h1>
+    <p>Carry water home! Grab the yellow jerry cans and jump over the rocks.</p>
+    <p class="goal">Goal: collect 12 jugs in 30 seconds.</p>
+  </header>
+
+  <main>
+    <!-- score and timer -->
+    <div class="info">
+      <p>Score: <span id="score">0</span></p>
+      <p>Time: <span id="time">30</span></p>
+    </div>
+
+    <!-- feedback message -->
+    <p id="message">Press Start. Then click, tap, or press SPACE to jump.</p>
+
+    <!-- the game -->
+    <div id="game-area">
+      <div id="player"></div>
+      <div id="ground"></div>
+    </div>
+
+    <div class="buttons">
+      <button id="start-btn">Start</button>
+      <button id="reset-btn">Reset</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>Inspired by <a href="https://www.charitywater.org" target="_blank">charity: water</a>. Student project.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
